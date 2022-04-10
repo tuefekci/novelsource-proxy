@@ -72,6 +72,9 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 			res.send('');
 		}
 
+		delete source;
+		delete chapter;
+
 
 	} catch (error) {
 		res.status(404);
