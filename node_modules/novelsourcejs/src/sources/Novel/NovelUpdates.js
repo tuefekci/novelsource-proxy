@@ -11,6 +11,7 @@ const Chapter = require("../../models/Chapter");
 class NovelUpdates extends SourceNovel {
 	base_urls = ["https://www.novelupdates.com/"];
 	last_updated = "2022-03-13";
+	name = "novelupdates.com";
 
 	constructor(args = {}) {
 		super(args);

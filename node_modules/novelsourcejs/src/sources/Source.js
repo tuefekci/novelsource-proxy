@@ -9,6 +9,7 @@ class SourceClass {
 
 	base_urls = [];
 	last_updated = "";
+	name = "";
 
 	constructor(args = {}) {
 		if(!empty(args)) {
@@ -19,7 +20,11 @@ class SourceClass {
 	}
 
 	getName() {
-		return this.constructor.name.toString();
+		if(!empty(this.name)) {
+			return this.name;
+		} else {
+			return this.constructor.name.toString();
+		}
 	}
 
 	parseStatus(status) {

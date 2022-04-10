@@ -12,7 +12,6 @@ class Novel extends Model {
 	language = "";
 
 	author = [];
-	volumes = [];
 	chapters = [];
 	metadata = [];
 

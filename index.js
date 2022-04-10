@@ -1,6 +1,5 @@
-const NSJS = require('novelsourcejs');
-const NovelSource = new NSJS();
 
+const NSJS = require('novelsourcejs');
 // ======================================================
 // Express
 // ======================================================
@@ -10,6 +9,7 @@ const compression = require('compression');
 const cors = require('cors');
 const { base64_decode } = require('locutus/php/url');
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(compression());
 
@@ -51,6 +51,9 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 	let url = base64_decode(req.params.url);
 	
 	try {
+
+		const NovelSource = new NSJS();		
+
 		let chapter;
 		const source = NovelSource.locateSource(url);
 
@@ -84,7 +87,7 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 
 });
 
-app.listen(3000);
+app.listen(port);
 
 // export 'app'
 module.exports = app
