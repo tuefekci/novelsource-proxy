@@ -1,5 +1,5 @@
-
 const NSJS = require('novelsourcejs');
+let NovelSource = new NSJS();	
 // ======================================================
 // Express
 // ======================================================
@@ -52,7 +52,7 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 	
 	try {
 
-		let NovelSource = new NSJS();		
+			
 		let chapter;
 		let source = NovelSource.locateSource(url);
 
@@ -74,15 +74,13 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 			res.send('');
 		}
 
-		delete NovelSource;
-		delete source;
-		delete chapter;
-
-
 	} catch (error) {
 		res.status(404);
 		res.send('');
 	}
+
+	const used = process.memoryUsage().heapUsed / 1024 / 1024;
+	console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
 
 
 });
