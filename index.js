@@ -52,10 +52,9 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 	
 	try {
 
-		const NovelSource = new NSJS();		
-
+		let NovelSource = new NSJS();		
 		let chapter;
-		const source = NovelSource.locateSource(url);
+		let source = NovelSource.locateSource(url);
 
 		if(source) {
 			chapter = await source.chapter(url);
@@ -75,6 +74,7 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 			res.send('');
 		}
 
+		delete NovelSource;
 		delete source;
 		delete chapter;
 
