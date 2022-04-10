@@ -87,7 +87,6 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 
 });
 
-app.listen(port);
-
-// export 'app'
-module.exports = app
+app.listen(port, () => {
+	console.log(`novelsource-proxy listening at http://localhost:${port}`);
+});
