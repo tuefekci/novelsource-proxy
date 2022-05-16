@@ -1,5 +1,31 @@
+// Allocating os module
+const os = require('os');
+
+const cacheFile = os.tmpdir()+'/novelsourcejs-cache';
+
+const cache = require('node-file-cache').create({ 
+	file: cacheFile,
+	life: 60*15,
+});
+
+console.log("cacheFile:", cacheFile);
+
+cache.expire((record) => {
+    // hook your logic here
+    return true; // if record should be removed
+});
+console.log("cacheCleaned!");
+
+
 const NSJS = require('novelsourcejs');
 let NovelSource = new NSJS();	
+
+
+
+
+
+
+
 // ======================================================
 // Express
 // ======================================================
@@ -48,19 +74,16 @@ app.get('/', cors(corsOptions), async (req, res) => {
 
 app.get('/:url', cors(corsOptions), async (req, res) => {
 
+	let chapter;
 	let url = base64_decode(req.params.url);
-	
-	try {
 
-			
-		let chapter;
-		let source = NovelSource.locateSource(url);
+	if(cache.get(req.params.url) !== null) {
+		
+		console.log("Cache hit!", url);
 
-		if(source) {
-			chapter = await source.chapter(url);
-		}
+		try {
 
-		if(chapter) {
+			chapter = cache.get(req.params.url);
 			res.writeHead(200, {'Content-Type':  'application/json' });
 			res.write(JSON.stringify({
 				live: true,
@@ -68,19 +91,56 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 				paragraphs: chapter.content,
 				url: chapter.url,
 			}));
-			res.end();
-		} else {
+
+		} catch (error) {
 			res.status(404);
 			res.send('');
 		}
 
-	} catch (error) {
-		res.status(404);
-		res.send('');
+		res.end();
+
+	} else {
+
+		console.log("Cache miss!", url);
+
+		try {
+
+			let source = NovelSource.locateSource(url);
+	
+			if(source) {
+				chapter = await source.chapter(url);
+			}
+	
+			if(chapter) {
+
+				cache.set(req.params.url, chapter);
+
+				res.writeHead(200, {'Content-Type':  'application/json' });
+				res.write(JSON.stringify({
+					live: true,
+					title: chapter.title,
+					paragraphs: chapter.content,
+					url: chapter.url,
+				}));
+			} else {
+				res.status(404);
+				res.send('');
+			}
+	
+		} catch (error) {
+			res.status(404);
+			res.send('');
+		}
+
+		res.end();
+
 	}
 
-	const used = process.memoryUsage().heapUsed / 1024 / 1024;
-	console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+
+	
+
+	//const used = process.memoryUsage().heapUsed / 1024 / 1024;
+	//console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
 
 
 });
