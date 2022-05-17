@@ -74,6 +74,9 @@ app.get('/', cors(corsOptions), async (req, res) => {
 
 app.get('/:url', cors(corsOptions), async (req, res) => {
 
+	console.log("----------------------------------------------------");
+	console.log("request:", req.params.url);
+
 	let chapter;
 	let url = base64_decode(req.params.url);
 
@@ -136,11 +139,10 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 
 	}
 
+	const used = process.memoryUsage().heapUsed / 1024 / 1024;
+	console.log(`The request uses approximately ${Math.round(used * 100) / 100} MB`);
 
-	
-
-	//const used = process.memoryUsage().heapUsed / 1024 / 1024;
-	//console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
+	console.log("----------------------------------------------------");
 
 
 });
