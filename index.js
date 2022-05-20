@@ -74,15 +74,15 @@ app.get('/', cors(corsOptions), async (req, res) => {
 
 app.get('/:url', cors(corsOptions), async (req, res) => {
 
-	console.log("----------------------------------------------------");
-	console.log("request:", req.params.url);
+	//console.log("----------------------------------------------------");
+	//console.log("request:", req.params.url);
 
 	let chapter;
 	let url = base64_decode(req.params.url);
 
 	if(cache.get(req.params.url) !== null) {
 		
-		console.log("Cache hit!", url);
+		//console.log("Cache hit!", url);
 
 		try {
 
@@ -104,7 +104,7 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 
 	} else {
 
-		console.log("Cache miss!", url);
+		//console.log("Cache miss!", url);
 
 		try {
 
@@ -139,10 +139,10 @@ app.get('/:url', cors(corsOptions), async (req, res) => {
 
 	}
 
-	const used = process.memoryUsage().heapUsed / 1024 / 1024;
-	console.log(`The request uses approximately ${Math.round(used * 100) / 100} MB`);
+	//const used = process.memoryUsage().heapUsed / 1024 / 1024;
+	//console.log(`The request uses approximately ${Math.round(used * 100) / 100} MB`);
 
-	console.log("----------------------------------------------------");
+	//console.log("----------------------------------------------------");
 
 
 });
