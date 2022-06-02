@@ -41,11 +41,15 @@ app.use(compression());
 
 const allowedOrigins = [
 	'capacitor://localhost',
-	'ionic://localhost', 
+	'ionic://localhost',
 	'http://localhost',
+	'https://localhost',
 	'http://localhost:8080',
+	'https://localhost:8080',
 	'http://localhost:8100',
+	'https://localhost:8100',
 	'http://192.168.10.99:8080',
+	'https://192.168.10.99:8080',
 	'*',
   ];
   
